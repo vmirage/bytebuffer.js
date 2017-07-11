@@ -16,17 +16,8 @@ ByteBufferPrototype.compact = function(begin, end) {
     if (begin === 0 && end === /*?= CAPACITY */)
         return this; // Already compacted
     var len = end - begin;
-    if (len === 0) {
-        this.buffer = EMPTY_BUFFER;
-        //? if (!NODE)
-        this.view = null;
-        if (this.markedOffset >= 0) this.markedOffset -= begin;
-        this.offset = 0;
-        this.limit = 0;
-        return this;
-    }
     //? if (NODE) {
-    var buffer = new Buffer(len);
+    var buffer = new Buffer(/*?= CAPACITY */);
     this.buffer.copy(buffer, 0, begin, end);
     this.buffer = buffer;
     //? } else if (DATAVIEW) {
@@ -42,8 +33,8 @@ ByteBufferPrototype.compact = function(begin, end) {
     this.view = view;
     //? }
     if (this.markedOffset >= 0) this.markedOffset -= begin;
-    this.offset = 0;
-    this.limit = len;
+    this.offset = len;
+    this.limit = /*?= CAPACITY */;
     return this;
 };
 

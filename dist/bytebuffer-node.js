@@ -2357,19 +2357,12 @@ module.exports = (function() {
         if (begin === 0 && end === this.buffer.length)
             return this; // Already compacted
         var len = end - begin;
-        if (len === 0) {
-            this.buffer = EMPTY_BUFFER;
-            if (this.markedOffset >= 0) this.markedOffset -= begin;
-            this.offset = 0;
-            this.limit = 0;
-            return this;
-        }
-        var buffer = new Buffer(len);
+        var buffer = new Buffer(this.buffer.length);
         this.buffer.copy(buffer, 0, begin, end);
         this.buffer = buffer;
         if (this.markedOffset >= 0) this.markedOffset -= begin;
-        this.offset = 0;
-        this.limit = len;
+        this.offset = len;
+        this.limit = this.buffer.length;
         return this;
     };
 

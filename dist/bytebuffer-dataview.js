@@ -2218,21 +2218,13 @@
         if (begin === 0 && end === this.buffer.byteLength)
             return this; // Already compacted
         var len = end - begin;
-        if (len === 0) {
-            this.buffer = EMPTY_BUFFER;
-            this.view = null;
-            if (this.markedOffset >= 0) this.markedOffset -= begin;
-            this.offset = 0;
-            this.limit = 0;
-            return this;
-        }
         var buffer = new ArrayBuffer(len);
         new Uint8Array(buffer).set(new Uint8Array(this.buffer).subarray(begin, end));
         this.buffer = buffer;
         this.view = new DataView(buffer);
         if (this.markedOffset >= 0) this.markedOffset -= begin;
-        this.offset = 0;
-        this.limit = len;
+        this.offset = len;
+        this.limit = this.buffer.byteLength;
         return this;
     };
 
